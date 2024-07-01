@@ -17,6 +17,75 @@ app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Middleware to parse JSON bodies
 const PORT = 3000;
 
+app.get('/characters', async (req, res) => {
+    try {
+        const client = await MongoClient.connect(url);
+        const db = client.db(dbName);
+        const collection = db.collection(charactersCollection);
+        const characters = await collection.find({}).toArray();
+        res.json(characters);
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+    }
+});
+
+app.get('/films/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+        const client = await MongoClient.connect(url);
+        const db = client.db(dbName);
+        const collection = db.collection(filmsCollection);
+        const films = await collection.find({ _id: new ObjectId(id) }).toArray();
+        res.json(films);
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+    }
+});
+
+app.get('/films/:id/characters', async (req, res) => {
+    try {
+        const { id } = req.params
+        const client = await MongoClient.connect(url);
+        const db = client.db(dbName);
+        const collection = db.collection(filmsCharactersCollection);
+        const filmsCharacters = await collection.find({ _id: new ObjectId(id) }).toArray();
+        res.json(filmsCharacters);
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+    }
+});
+
+app.get('/characters/:id/films', async (req, res) => {
+    try {
+        const { id } = req.params
+        const client = await MongoClient.connect(url);
+        const db = client.db(dbName);
+        const collection = db.collection(filmsCharactersCollection);
+        const filmsCharacters = await collection.find({ _id: new ObjectId(id) }).toArray();
+        res.json(filmsCharacters);
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+    }
+});
+
+app.get('/planets/:id/characters', async (req, res) => {
+    try {
+        const { id } = req.params
+        const client = await MongoClient.connect(url);
+        const db = client.db(dbName);
+        const collection = db.collection(filmsCharactersCollection);
+        const filmsCharacters = await collection.find({ _id: new ObjectId(id) }).toArray();
+        res.json(filmsCharacters);
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+    }
+});
+
 app.get('/api/planets', async (req, res) => {
     try {
         const client = await MongoClient.connect(url);
