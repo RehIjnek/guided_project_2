@@ -37,7 +37,7 @@ app.get('/api/films/:id', async (req, res) => {
         const db = client.db(dbName);
         const collection = db.collection(filmsCollection);
         const films = await collection.find({ id:parseInt(id) }).toArray();
-        res.json(films);
+        res.json(films[0]);
     } catch (err) {
         console.error("Error:", err);
         res.status(500).send("Hmmm, something smells... No films for you! ☹");
@@ -116,9 +116,9 @@ app.get('/api/characters/:id', async (req, res) => {
         const id = req.params.id;
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
-        const collection = db.collection(filmsCollection);
+        const collection = db.collection(charactersCollection);
         const characters = await collection.find({ id: parseInt(id) }).toArray();
-        res.json(characters);
+        res.json(characters[0]);
     } catch (err) {
         console.error("Error:", err);
         res.status(500).send("Hmmm, something smells... No characters for you! ☹");
@@ -132,7 +132,7 @@ app.get('/api/planets/:id', async (req, res) => {
         const db = client.db(dbName);
         const collection = db.collection(planetsCollection);
         const planets = await collection.find({ id: parseInt(id) }).toArray();
-        res.json(planets);
+        res.json(planets[0]);
     } catch (err) {
         console.error("Error:", err);
         res.status(500).send("Hmmm, something smells... No planets for you! ☹");

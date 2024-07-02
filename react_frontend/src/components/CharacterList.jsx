@@ -1,8 +1,10 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const CharacterList = (props) => {
     const [data, setData] = useState([]);
+    let navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,8 +28,8 @@ const CharacterList = (props) => {
             <section id="charactersList">
                 {
                     data.map((character) => (
-                        <div key={character.id} onClick={() => this.props.history.push(`/characters/${character.id}`)}>
-                            {character.name}
+                        <div key={character.id} onClick={() => navigate(`/characters/${character.id}`)}>
+                           {character.name}
                         </div>
                     ))
                 }
