@@ -26,7 +26,7 @@ app.get('/api/characters', async (req, res) => {
         res.json(characters);
     } catch (err) {
         console.error("Error:", err);
-        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+        res.status(500).send("Hmmm, something smells... No characters for you! ☹");
     }
 });
 
@@ -40,7 +40,7 @@ app.get('/api/films/:id', async (req, res) => {
         res.json(films);
     } catch (err) {
         console.error("Error:", err);
-        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+        res.status(500).send("Hmmm, something smells... No films for you! ☹");
     }
 });
 
@@ -50,39 +50,51 @@ app.get('/api/films/:id/characters', async (req, res) => {
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
         const collection = db.collection(filmsCharactersCollection);
-        const filmsCharacters = await collection.find({ id: parseInt(id) }).toArray();
-        res.json(filmsCharacters);
+        const filmsCharacters = await collection.find({ film_id: parseInt(id) }).toArray();
+        const collection2 = db.collection(charactersCollection);
+        const characters = [];
+        for (let i = 0; i < filmsCharacters.length; i++) {
+            const character_id = filmsCharacters[i].character_id;
+            characters[i] = (await collection2.find({ id: character_id }).toArray())[0];
+        }
+        res.json(characters);
     } catch (err) {
         console.error("Error:", err);
-        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+        res.status(500).send("Hmmm, something smells... No characters for you! ☹");
     }
 });
 
 app.get('/api/characters/:id/films', async (req, res) => {
     try {
-        const { id } = req.params
+        const id = req.params.id;
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
         const collection = db.collection(filmsCharactersCollection);
-        const filmsCharacters = await collection.find({ id: parseInt(id) }).toArray();
-        res.json(filmsCharacters);
+        const filmsCharacters = await collection.find({ character_id: parseInt(id) }).toArray();
+        const collection2 = db.collection(filmsCollection);
+        const films = [];
+        for (let i = 0; i < filmsCharacters.length; i++) {
+            const film_id = filmsCharacters[i].film_id;
+            films[i] = (await collection2.find({ id: film_id }).toArray())[0];
+        }
+        res.json(films);
     } catch (err) {
         console.error("Error:", err);
-        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+        res.status(500).send("Hmmm, something smells... No films for you! ☹");
     }
 });
 
 app.get('/api/planets/:id/characters', async (req, res) => {
     try {
-        const { id } = req.params
+        const id = req.params.id;
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
-        const collection = db.collection(filmsCharactersCollection);
-        const filmsCharacters = await collection.find({id: parseInt(id)}).toArray();
-        res.json(filmsCharacters);
+        const collection = db.collection(charactersCollection);
+        const characters = await collection.find({ homeworld: parseInt(id) }).toArray();
+        res.json(characters);
     } catch (err) {
         console.error("Error:", err);
-        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+        res.status(500).send("Hmmm, something smells... No characters for you! ☹");
     }
 });
 
@@ -109,7 +121,7 @@ app.get('/api/characters/:id', async (req, res) => {
         res.json(characters);
     } catch (err) {
         console.error("Error:", err);
-        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+        res.status(500).send("Hmmm, something smells... No characters for you! ☹");
     }
 });
 
@@ -137,7 +149,7 @@ app.get('/api/films', async (req, res) => {
         res.json(films);
     } catch (err) {
         console.error("Error:", err);
-        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+        res.status(500).send("Hmmm, something smells... No films for you! ☹");
     }
 });
 
@@ -147,7 +159,13 @@ app.get('/api/films/:id/planets', async (req, res) => {
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
         const collection = db.collection(filmsPlanetsCollection);
-        const planets = await collection.find({ id: parseInt(id) }).toArray();
+        const filmsPlanets = await collection.find({ film_id: parseInt(id) }).toArray();
+        const collection2 = db.collection(planetsCollection);
+        const planets = [];
+        for (let i = 0; i < filmsPlanets.length; i++) {
+            const planet_id = filmsPlanets[i].planet_id;
+            planets[i] = (await collection2.find({ id: planet_id }).toArray())[0];
+        }
         res.json(planets);
     } catch (err) {
         console.error("Error:", err);
@@ -161,11 +179,17 @@ app.get('/api/planets/:id/films', async (req, res) => {
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
         const collection = db.collection(filmsPlanetsCollection);
-        const planets = await collection.find({ id: parseInt(id)}).toArray();
-        res.json(planets);
+        const filmsPlanets = await collection.find({ planet_id: parseInt(id) }).toArray();
+        const collection2 = db.collection(filmsCollection);
+        const films = [];
+        for (let i = 0; i < filmsPlanets.length; i++) {
+            const film_id = filmsPlanets[i].film_id;
+            films[i] = (await collection2.find({ id: film_id }).toArray())[0];
+        }
+        res.json(films);
     } catch (err) {
         console.error("Error:", err);
-        res.status(500).send("Hmmm, something smells... No planets for you! ☹");
+        res.status(500).send("Hmmm, something smells... No films for you! ☹");
     }
 });
 
