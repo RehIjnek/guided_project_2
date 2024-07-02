@@ -46,11 +46,11 @@ app.get('/api/films/:id', async (req, res) => {
 
 app.get('/api/films/:id/characters', async (req, res) => {
     try {
-        const { id } = req.params
+        const id = req.params.id;
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
         const collection = db.collection(filmsCharactersCollection);
-        const filmsCharacters = await collection.find({ _id: new ObjectId(id) }).toArray();
+        const filmsCharacters = await collection.find({ id: parseInt(id) }).toArray();
         res.json(filmsCharacters);
     } catch (err) {
         console.error("Error:", err);
@@ -64,7 +64,7 @@ app.get('/api/characters/:id/films', async (req, res) => {
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
         const collection = db.collection(filmsCharactersCollection);
-        const filmsCharacters = await collection.find({ _id: new ObjectId(id) }).toArray();
+        const filmsCharacters = await collection.find({ id: parseInt(id) }).toArray();
         res.json(filmsCharacters);
     } catch (err) {
         console.error("Error:", err);
@@ -78,7 +78,7 @@ app.get('/api/planets/:id/characters', async (req, res) => {
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
         const collection = db.collection(filmsCharactersCollection);
-        const filmsCharacters = await collection.find({ _id: new ObjectId(id) }).toArray();
+        const filmsCharacters = await collection.find({id: parseInt(id)}).toArray();
         res.json(filmsCharacters);
     } catch (err) {
         console.error("Error:", err);
@@ -101,11 +101,11 @@ app.get('/api/planets', async (req, res) => {
 
 app.get('/api/characters/:id', async (req, res) => {
     try {
-        const { id } = req.params;
+        const id = req.params.id;
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
         const collection = db.collection(filmsCollection);
-        const characters = await collection.find({_id: new ObjectId(id)}).toArray();
+        const characters = await collection.find({ id: parseInt(id) }).toArray();
         res.json(characters);
     } catch (err) {
         console.error("Error:", err);
@@ -115,11 +115,11 @@ app.get('/api/characters/:id', async (req, res) => {
 
 app.get('/api/planets/:id', async (req, res) => {
     try {
-        const { id } = req.params;
+        const id = req.params.id;
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
         const collection = db.collection(planetsCollection);
-        const planets = await collection.find({_id: new ObjectId(id)}).toArray();
+        const planets = await collection.find({ id: parseInt(id) }).toArray();
         res.json(planets);
     } catch (err) {
         console.error("Error:", err);
@@ -143,11 +143,11 @@ app.get('/api/films', async (req, res) => {
 
 app.get('/api/films/:id/planets', async (req, res) => {
     try {
-        const { id } = req.params;
+        const id = req.params.id;
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
         const collection = db.collection(filmsPlanetsCollection);
-        const planets = await collection.find({_id: new ObjectId(id)}).toArray();
+        const planets = await collection.find({ id: parseInt(id) }).toArray();
         res.json(planets);
     } catch (err) {
         console.error("Error:", err);
@@ -157,11 +157,11 @@ app.get('/api/films/:id/planets', async (req, res) => {
 
 app.get('/api/planets/:id/films', async (req, res) => {
     try {
-        const { id } = req.params;
+        const id = req.params.id;
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
         const collection = db.collection(filmsPlanetsCollection);
-        const planets = await collection.find({_id: new ObjectId(id)}).toArray();
+        const planets = await collection.find({ id: parseInt(id)}).toArray();
         res.json(planets);
     } catch (err) {
         console.error("Error:", err);
