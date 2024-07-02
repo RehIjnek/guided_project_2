@@ -19,6 +19,16 @@ function App() {
           <Route path="/planets/:id" element={<Planet />} />
         </Routes>
       </Router>
+=======
+
+function App() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {}, []);
+
+  return (
+    <>
+      <CharacterList />
     </>
   )
 }
