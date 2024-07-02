@@ -17,7 +17,7 @@ app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Middleware to parse JSON bodies
 const PORT = 3000;
 
-app.get('/characters', async (req, res) => {
+app.get('/api/characters', async (req, res) => {
     try {
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
@@ -30,13 +30,13 @@ app.get('/characters', async (req, res) => {
     }
 });
 
-app.get('/films/:id', async (req, res) => {
+app.get('/api/films/:id', async (req, res) => {
     try {
-        const { id } = req.params
+        const id = req.params.id
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
         const collection = db.collection(filmsCollection);
-        const films = await collection.find({ _id: new ObjectId(id) }).toArray();
+        const films = await collection.find({ id:parseInt(id) }).toArray();
         res.json(films);
     } catch (err) {
         console.error("Error:", err);
@@ -44,7 +44,7 @@ app.get('/films/:id', async (req, res) => {
     }
 });
 
-app.get('/films/:id/characters', async (req, res) => {
+app.get('/api/films/:id/characters', async (req, res) => {
     try {
         const { id } = req.params
         const client = await MongoClient.connect(url);
@@ -58,7 +58,7 @@ app.get('/films/:id/characters', async (req, res) => {
     }
 });
 
-app.get('/characters/:id/films', async (req, res) => {
+app.get('/api/characters/:id/films', async (req, res) => {
     try {
         const { id } = req.params
         const client = await MongoClient.connect(url);
@@ -72,7 +72,7 @@ app.get('/characters/:id/films', async (req, res) => {
     }
 });
 
-app.get('/planets/:id/characters', async (req, res) => {
+app.get('/api/planets/:id/characters', async (req, res) => {
     try {
         const { id } = req.params
         const client = await MongoClient.connect(url);
